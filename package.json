@@ -11,9 +11,12 @@
     "db:dev:up": "docker compose up dev-db -d",
     "db:dev:restart": "yarn db:dev:rm && yarn db:dev:up && timeout 6 && yarn prisma:dev:deploy",
     "prisma:test:deploy": "dotenv -e .env.test -- prisma migrate deploy",
-    "db:test:rm": "docker compose rm test-db -s -f -v",
-    "db:test:up": "docker compose up test-db -d",
-    "db:test:restart": "yarn db:test:rm && yarn db:test:up && timeout 6 && yarn prisma:test:deploy",
+    "windows:db:test:rm": "docker compose rm test-db -s -f -v",
+    "windows:db:test:up": "docker compose up test-db -d",
+    "windows:db:test:restart": "yarn windows:db:test:rm && yarn windows:db:test:up && timeout 6 && yarn prisma:test:deploy",
+    "linux:db:test:rm": "docker-compose rm -s -f -v test-db",
+    "linux:db:test:up": "docker-compose up -d test-db",
+    "linux:db:test:restart": "yarn linux:db:test:rm && yarn linux:db:test:up && sleep 6 && yarn prisma:test:deploy",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -26,8 +29,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "pretest:e2e": "yarn db:test:restart",
-    "test:e2e": "dotenv -e .env.test -- jest --watch --no-cache --config ./test/jest-e2e.json"
+    "pretestlinux:e2e": "yarn linux:db:test:restart",
+    "testlinux:e2e": "dotenv -e .env.test -- jest --watch --no-cache --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
