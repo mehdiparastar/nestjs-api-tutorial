@@ -13,7 +13,8 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get('me')
-  getMe(@GetUser() user: User) {
+  getMe(@GetUser() user: User, @Req() request: Request) {
+    console.log(request.cookies);
     return user;
   }
 
